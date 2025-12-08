@@ -3,7 +3,7 @@
 import java.util.HashMap;
 import java.util.Random;
 
-<span class="nc" id="L6">public class UpdatePlayer {</span>
+<span class="fc" id="L6">public class UpdatePlayer {</span>
 
 <span class="fc" id="L8">    private final static String[] objectList = {&quot;Lookout Ring : Prevents surprise attacks&quot;,&quot;Scroll of Stupidity : INT-2 when applied to an enemy&quot;, &quot;Draupnir : Increases XP gained by 100%&quot;, &quot;Magic Charm : Magic +10 for 5 rounds&quot;, &quot;Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?&quot;, &quot;Combat Edge : Well, that's an edge&quot;, &quot;Holy Elixir : Recover your HP&quot;</span>
     };
@@ -122,46 +122,46 @@ import java.util.Random;
 
     // majFinDeTour met à jour les points de vie
     public static void majFinDeTour(player player) {
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        if(player.currenthealthpoints == 0) {</span>
-<span class="nc" id="L126">            System.out.println(&quot;Le joueur est KO !&quot;);</span>
-<span class="nc" id="L127">            return;</span>
+<span class="fc bfc" id="L125" title="All 2 branches covered.">        if(player.currenthealthpoints == 0) {</span>
+<span class="fc" id="L126">            System.out.println(&quot;Le joueur est KO !&quot;);</span>
+<span class="fc" id="L127">            return;</span>
         }
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        if(player.currenthealthpoints &lt; player.healthpoints/2) {</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">            if(!player.getAvatarClass().equals(&quot;ADVENTURER&quot;)) {</span>
-<span class="nc bnc" id="L132" title="All 2 branches missed.">                if(player.getAvatarClass().equals(&quot;DWARF&quot;)) {</span>
-<span class="nc bnc" id="L133" title="All 2 branches missed.">                    if(player.inventory.contains(&quot;Holy Elixir&quot;)) {</span>
-<span class="nc" id="L134">                        player.currenthealthpoints+=1;</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">        if(player.currenthealthpoints &lt; player.healthpoints/2) {</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">            if(!player.getAvatarClass().equals(&quot;ADVENTURER&quot;)) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">                if(player.getAvatarClass().equals(&quot;DWARF&quot;)) {</span>
+<span class="fc bfc" id="L133" title="All 2 branches covered.">                    if(player.inventory.contains(&quot;Holy Elixir&quot;)) {</span>
+<span class="fc" id="L134">                        player.currenthealthpoints+=1;</span>
                     }
-<span class="nc" id="L136">                    player.currenthealthpoints+=1;</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">                } else if(player.getAvatarClass().equals(&quot;ADVENTURER&quot;)) {</span>
+<span class="fc" id="L136">                    player.currenthealthpoints+=1;</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                } else if(player.getAvatarClass().equals(&quot;ADVENTURER&quot;)) {</span>
 <span class="nc" id="L138">                    player.currenthealthpoints+=2;</span>
                 }
 
 
-<span class="nc bnc" id="L142" title="All 2 branches missed.">                if(player.getAvatarClass().equals(&quot;ARCHER&quot;)) {</span>
-<span class="nc" id="L143">                    player.currenthealthpoints+=1;</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">                    if(player.inventory.contains(&quot;Magic Bow&quot;)) {</span>
-<span class="nc" id="L145">                        player.currenthealthpoints+=player.currenthealthpoints/8-1;</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">                if(player.getAvatarClass().equals(&quot;ARCHER&quot;)) {</span>
+<span class="fc" id="L143">                    player.currenthealthpoints+=1;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">                    if(player.inventory.contains(&quot;Magic Bow&quot;)) {</span>
+<span class="fc" id="L145">                        player.currenthealthpoints+=player.currenthealthpoints/8-1;</span>
                     }
                 }
             } else {
-<span class="nc" id="L149">                player.currenthealthpoints+=2;</span>
-<span class="nc bnc" id="L150" title="All 2 branches missed.">                if(player.retrieveLevel() &lt; 3) {</span>
-<span class="nc" id="L151">                    player.currenthealthpoints-=1;</span>
+<span class="fc" id="L149">                player.currenthealthpoints+=2;</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">                if(player.retrieveLevel() &lt; 3) {</span>
+<span class="fc" id="L151">                    player.currenthealthpoints-=1;</span>
                 }
             }
-<span class="nc bnc" id="L154" title="All 2 branches missed.">        } else if(player.currenthealthpoints &gt;= player.healthpoints/2){</span>
-<span class="nc bnc" id="L155" title="All 2 branches missed.">            if(player.currenthealthpoints &gt;= player.healthpoints) {</span>
-<span class="nc" id="L156">                player.currenthealthpoints = player.healthpoints;</span>
-<span class="nc" id="L157">                return;</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        } else if(player.currenthealthpoints &gt;= player.healthpoints/2){</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            if(player.currenthealthpoints &gt;= player.healthpoints) {</span>
+<span class="fc" id="L156">                player.currenthealthpoints = player.healthpoints;</span>
+<span class="fc" id="L157">                return;</span>
             }
         }
 
 
-<span class="nc bnc" id="L162" title="All 2 branches missed.">        if(player.currenthealthpoints &gt;= player.healthpoints) {</span>
+<span class="pc bpc" id="L162" title="1 of 2 branches missed.">        if(player.currenthealthpoints &gt;= player.healthpoints) {</span>
 <span class="nc" id="L163">            player.currenthealthpoints = player.healthpoints;</span>
         }
-<span class="nc" id="L165">    }</span>
+<span class="fc" id="L165">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
