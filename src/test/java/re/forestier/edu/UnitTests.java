@@ -33,44 +33,44 @@ public class UnitTests {
     @Test
     @DisplayName("Sample test")
     void testPlayerName() {
-        player player = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
-        assertThat(player.playerName, is("ibrahim"));
+        Player Player = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        assertThat(Player.getPlayerName(), is("Florian"));
         
     }
 
     @Test
-    @DisplayName("Constructor player")
+    @DisplayName("Constructor Player")
     void testPlayerConstructor()
     {
-        player p = new player("ibrahim", "Ghoual", "jgn", 100, new ArrayList<>());
-        assertThat(p.playerName, not("ibrahim"));
-        p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
-        assertThat(p.playerName, is("ibrahim"));
-        p = new player("ibrahim", "Ghoual", "DWARF", 100, new ArrayList<>());
-        assertThat(p.playerName, is("ibrahim"));
-        p = new player("ibrahim", "Ghoual", "ARCHER", 100, new ArrayList<>());
-        assertThat(p.playerName, is("ibrahim"));
+        Player p = new Player("Florian", "Grognak le barbare", "jgn", 100, new ArrayList<>());
+        assertThat(p.getPlayerName(), not("Florian"));
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        assertThat(p.getPlayerName(), is("Florian"));
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
+        assertThat(p.getPlayerName(), is("Florian"));
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>());
+        assertThat(p.getPlayerName(), is("Florian"));
     }
 
     @Test
     @DisplayName("removeMoney")
     void testRemoveMoney() {
-        player p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
 
         assertThrows(IllegalArgumentException.class, () -> p.removeMoney(200));
         p.removeMoney(50);
-        assertThat(p.money, is(50));
-        assertThat(p.money, not(150));
+        assertThat(p.getMoney(), is(50));
+        assertThat(p.getMoney(), not(150));
         p.removeMoney(50);
-        assertThat(p.money, is(0));
+        assertThat(p.getMoney(), is(0));
     }
 
     @Test
     @DisplayName("addMoney")
     void testAddMoney() {
-        player p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
         p.addMoney(50);
-        assertThat(p.money, is(150));
+        assertThat(p.getMoney(), is(150));
     }
 
     @Test
@@ -83,108 +83,105 @@ public class UnitTests {
     @Test
     @DisplayName("ex & lvl")
     void testRetrieveLevel() {
-        player p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
         boolean b;
-        b = UpdatePlayer.addXp(p,5);
+        p.addXp(5);
         assertThat(p.getXp(),is(5));
-        assertThat(p.retrieveLevel(),is(1));
-        b = UpdatePlayer.addXp(p,6);
-        assertThat(p.retrieveLevel(),is(2));
-        b = UpdatePlayer.addXp(p,22);
-        assertThat(p.retrieveLevel(),is(3));
-        b = UpdatePlayer.addXp(p,30);
-        assertThat(p.retrieveLevel(),is(4));
-        b = UpdatePlayer.addXp(p,100);
-        assertThat(p.retrieveLevel(),is(5));
+        assertThat(p.getLevel(),is(1));
+        p.addXp(6);
+        assertThat(p.getLevel(),is(2));
+        p.addXp(22);
+        assertThat(p.getLevel(),is(3));
+        p.addXp(30);
+        assertThat(p.getLevel(),is(4));
+        p.addXp(100);
+        assertThat(p.getLevel(),is(5));
 
-        p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
         int tailleinv = p.inventory.size();
-        b = UpdatePlayer.addXp(p,10);
+        p.addXp(10);
         int atk = p.abilities.get("ATK");
         assertNotEquals(p.inventory.size(),tailleinv);
-        assertThat(p.retrieveLevel(),is(2));
-        assertThat(b,is(true));
-        b = UpdatePlayer.addXp(p,17);
-        assertThat(p.retrieveLevel(),is(3));
-        b = UpdatePlayer.addXp(p,30);
-        assertThat(p.retrieveLevel(),is(4));
-        b = UpdatePlayer.addXp(p,54);
-        assertThat(p.retrieveLevel(),is(5));
-        b = UpdatePlayer.addXp(p,1);
-        assertThat(b,is(false));
+        assertThat(p.getLevel(),is(2));
+        p.addXp(17);
+        assertThat(p.getLevel(),is(3));
+        p.addXp(30);
+        assertThat(p.getLevel(),is(4));
+        p.addXp(54);
+        assertThat(p.getLevel(),is(5));
+        p.addXp(1);
         assertNotEquals(p.abilities.get("ATK"),atk);
     }
 
     @Test
     @DisplayName("majDeFinDeTour")
     void testMajFinTour() {
-        player p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
-        p.currenthealthpoints = 0;
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(0);
         UpdatePlayer.majFinDeTour(p);
         assertEquals("Le joueur est KO !", outContent.toString().trim());
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(2));
-        boolean b = UpdatePlayer.addXp(p,100);
+        assertThat(p.getCurrentHealthPoints(),is(2));
+        p.addXp(100);
         UpdatePlayer.majFinDeTour(p);
-        p.currenthealthpoints = 9;
+        p.setCurrentHealthPoints(9);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(9));
-        p.currenthealthpoints = 11;
+        assertThat(p.getCurrentHealthPoints(),is(9));
+        p.setCurrentHealthPoints(11);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(p.healthpoints));
+        assertThat(p.getCurrentHealthPoints(),is(p.getHealthPoints()));
         
-        p = new player("ibrahim", "Ghoual", "DWARF", 100, new ArrayList<>());
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(2));
+        assertThat(p.getCurrentHealthPoints(),is(2));
 
-        p = new player("ibrahim", "Ghoual", "DWARF", 100, new ArrayList<>());
-        p.currenthealthpoints = 5;
-        p.healthpoints = 10;
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(5);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(5));
+        assertThat(p.getCurrentHealthPoints(),is(5));
 
         ArrayList<String> inv = new ArrayList<String>();
         inv.add("Holy Elixir");
-        p = new player("ibrahim", "Ghoual", "DWARF", 100, inv);
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, inv);
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(3));
+        assertThat(p.getCurrentHealthPoints(),is(3));
 
-        p = new player("ibrahim", "Ghoual", "ARCHER", 100, new ArrayList<>());
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(2));
+        assertThat(p.getCurrentHealthPoints(),is(2));
 
-        p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
-        UpdatePlayer.addXp(p,28);
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
+        p.addXp(28);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(3));
+        assertThat(p.getCurrentHealthPoints(),is(3));
 
         inv.add("Magic Bow");
-        p = new player("ibrahim", "Ghoual", "ARCHER", 100, inv);
-        p.currenthealthpoints = 1;
-        p.healthpoints = 10;
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, inv);
+        p.setCurrentHealthPoints(1);
+        p.setHealthPoints(10);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(1));
+        assertThat(p.getCurrentHealthPoints(),is(1));
+        p.setCurrentHealthPoints(16);
+        p.setHealthPoints(40);
+        UpdatePlayer.majFinDeTour(p);
+        assertThat(p.getCurrentHealthPoints(),is(17 + 17/8-1));
 
-        p.currenthealthpoints = 16;
-        p.healthpoints = 40;
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
+        p.setCurrentHealthPoints(20);
+        p.setHealthPoints(40);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.currenthealthpoints,is(17 + 17/8-1));
-
-        p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, new ArrayList<>());
-        p.currenthealthpoints = 20;
-        p.healthpoints = 40;
-        UpdatePlayer.majFinDeTour(p);
-        assertEquals(p.currenthealthpoints,20);
+        assertEquals(p.getCurrentHealthPoints(),20);
     }
 
     @Test
@@ -195,8 +192,8 @@ public class UnitTests {
 
         ArrayList<String> inv = new ArrayList<String>();
         inv.add("Holy Elixir");
-        player p = new player("ibrahim", "Ghoual", "ADVENTURER", 100, inv);
-        assertEquals("Joueur Ghoual joué par ibrahim\nNiveau : 1 (XP totale : 0)\n\nCapacités :\n   DEF : 1\n   ATK : 3\n   CHA : 3\n   INT : 2\n\nInventaire :\n   Holy Elixir",  Affichage.afficherJoueur(p));
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, inv);
+        assertEquals("Joueur Grognak le barbare joué par Florian\nNiveau : 1 (XP totale : 0)\n\nCapacités :\n   DEF : 1\n   ATK : 3\n   CHA : 3\n   INT : 2\n\nInventaire :\n   Holy Elixir",  Affichage.afficherJoueur(p));
     }
 
     @Test

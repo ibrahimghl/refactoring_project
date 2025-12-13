@@ -2,9 +2,9 @@
 
 <span class="fc" id="L3">public class Affichage {</span>
 
-    public static String afficherJoueur(player player) {
-<span class="fc" id="L6">        final String[] finalString = {&quot;Joueur &quot; + player.Avatar_name + &quot; joué par &quot; + player.playerName};</span>
-<span class="fc" id="L7">        finalString[0] += &quot;\nNiveau : &quot; + player.retrieveLevel() + &quot; (XP totale : &quot; + player.xp + &quot;)&quot;;</span>
+    public static String afficherJoueur(Player player) {
+<span class="fc" id="L6">        final String[] finalString = {&quot;Joueur &quot; + player.getAvatarName() + &quot; joué par &quot; + player.getPlayerName()};</span>
+<span class="fc" id="L7">        finalString[0] += &quot;\nNiveau : &quot; + player.retrieveLevel() + &quot; (XP totale : &quot; + player.getXp() + &quot;)&quot;;</span>
 <span class="fc" id="L8">        finalString[0] += &quot;\n\nCapacités :&quot;;</span>
 <span class="fc" id="L9">        player.abilities.forEach((name, level) -&gt; {</span>
 <span class="fc" id="L10">            finalString[0] += &quot;\n   &quot; + name + &quot; : &quot; + level;</span>
@@ -17,4 +17,4 @@
 <span class="fc" id="L17">        return finalString[0];</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

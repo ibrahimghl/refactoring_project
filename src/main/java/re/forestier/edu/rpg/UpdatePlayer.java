@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class UpdatePlayer {
 
-    private final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
+    public final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
     };
 
     public static HashMap<String, HashMap<Integer, HashMap<String, Integer>>> abilitiesPerTypeAndLevel() {
@@ -98,69 +98,43 @@ public class UpdatePlayer {
         return abilitiesPerTypeAndLevel;
     }
 
-    public static boolean addXp(player player, int xp) {
-        int currentLevel = player.retrieveLevel();
-        player.xp += xp;
-        int newLevel = player.retrieveLevel();
-
-        if (newLevel != currentLevel) {
-            // Player leveled-up!
-            // Give a random object
-            ;
-            Random random = new Random();
-            player.inventory.add(objectList[random.nextInt(objectList.length - 0) + 0]);
-
-            // Add/upgrade abilities to player
-            HashMap<String, Integer> abilities = abilitiesPerTypeAndLevel().get(player.getAvatarClass()).get(newLevel);
-            abilities.forEach((ability, level) -> {
-                player.abilities.put(ability, abilities.get(ability));
-            });
-            return true;
-        }
-        return false;
-    }
-
     // majFinDeTour met à jour les points de vie
-    public static void majFinDeTour(player player) {
-        if(player.currenthealthpoints == 0) {
+    public static void majFinDeTour(Player player) {
+        if(player.getCurrentHealthPoints() == 0) {
             System.out.println("Le joueur est KO !");
             return;
         }
 
-        if(player.currenthealthpoints < player.healthpoints/2) {
+        if(player.getCurrentHealthPoints() < player.getHealthPoints()/2) {
             if(!player.getAvatarClass().equals("ADVENTURER")) {
                 if(player.getAvatarClass().equals("DWARF")) {
                     if(player.inventory.contains("Holy Elixir")) {
-                        player.currenthealthpoints+=1;
+                        player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
                     }
-                    player.currenthealthpoints+=1;
-                } else if(player.getAvatarClass().equals("ADVENTURER")) {
-                    player.currenthealthpoints+=2;
+                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
                 }
 
 
                 if(player.getAvatarClass().equals("ARCHER")) {
-                    player.currenthealthpoints+=1;
+                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
                     if(player.inventory.contains("Magic Bow")) {
-                        player.currenthealthpoints+=player.currenthealthpoints/8-1;
+                        player.setCurrentHealthPoints(player.getCurrentHealthPoints()+player.getCurrentHealthPoints()/8-1);
                     }
                 }
             } else {
-                player.currenthealthpoints+=2;
-                if(player.retrieveLevel() < 3) {
-                    player.currenthealthpoints-=1;
+                player.setCurrentHealthPoints(player.getCurrentHealthPoints()+2);
+                if(player.getLevel() < 3) {
+                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()-1);
                 }
             }
-        } else if(player.currenthealthpoints >= player.healthpoints/2){
-            if(player.currenthealthpoints >= player.healthpoints) {
-                player.currenthealthpoints = player.healthpoints;
+        } else 
+        {
+            if(player.getCurrentHealthPoints() >= player.getHealthPoints()) {
+                player.setCurrentHealthPoints(player.getHealthPoints());
                 return;
             }
         }
-
-
-        if(player.currenthealthpoints >= player.healthpoints) {
-            player.currenthealthpoints = player.healthpoints;
-        }
     }
+
+
 }

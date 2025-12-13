@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="re.forestier.edu.UnitTests" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-12-08T23:29:38" hostname="ibrahim-VirtualBox" time="0.138">
+<testsuite name="re.forestier.edu.UnitTests" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-12-13T20:12:23" hostname="ibrahim-VirtualBox" time="0.231">
   <properties/>
-  <testcase name="Main" classname="re.forestier.edu.UnitTests" time="0.018"/>
-  <testcase name="removeMoney" classname="re.forestier.edu.UnitTests" time="0.016"/>
-  <testcase name="ex &amp; lvl" classname="re.forestier.edu.UnitTests" time="0.022"/>
-  <testcase name="addMoney" classname="re.forestier.edu.UnitTests" time="0.002"/>
-  <testcase name="Construcor UpdatePlayer" classname="re.forestier.edu.UnitTests" time="0.002"/>
-  <testcase name="majDeFinDeTour" classname="re.forestier.edu.UnitTests" time="0.016"/>
-  <testcase name="Constructor player" classname="re.forestier.edu.UnitTests" time="0.002"/>
-  <testcase name="Affichage" classname="re.forestier.edu.UnitTests" time="0.029"/>
-  <testcase name="Sample test" classname="re.forestier.edu.UnitTests" time="0.006"/>
+  <testcase name="Main" classname="re.forestier.edu.UnitTests" time="0.02"/>
+  <testcase name="removeMoney" classname="re.forestier.edu.UnitTests" time="0.031"/>
+  <testcase name="ex &amp; lvl" classname="re.forestier.edu.UnitTests" time="0.024"/>
+  <testcase name="addMoney" classname="re.forestier.edu.UnitTests" time="0.01"/>
+  <testcase name="Construcor UpdatePlayer" classname="re.forestier.edu.UnitTests" time="0.015"/>
+  <testcase name="majDeFinDeTour" classname="re.forestier.edu.UnitTests" time="0.009"/>
+  <testcase name="Constructor Player" classname="re.forestier.edu.UnitTests" time="0.002"/>
+  <testcase name="Affichage" classname="re.forestier.edu.UnitTests" time="0.041"/>
+  <testcase name="Sample test" classname="re.forestier.edu.UnitTests" time="0.022"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
