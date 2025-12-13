@@ -3,11 +3,14 @@ package re.forestier.edu;
 import org.junit.jupiter.api.*;
 import re.forestier.edu.rpg.*;
 import java.io.PrintStream;
+import re.forestier.edu.lib.*;
 import java.io.ByteArrayOutputStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -186,7 +189,7 @@ public class UnitTests {
 
     @Test
     @DisplayName("Affichage")
-    void testAfficage() {
+    void testAffichage() {
         Affichage a = new Affichage();
         assertNotNull(a);
 
@@ -201,6 +204,48 @@ public class UnitTests {
     void testMain() {
         Main m = new Main();
         assertNotNull(m);
+    }
+
+    @Test
+    @DisplayName("Natural Tests")
+    void testNatural()
+    {
+        Natural n = new Natural();
+        assertNotNull(n);
+        assertNotNull(Natural.valueOf(2));
+        assertEquals(n.toInt(),0);
+
+        n = Natural.valueOf(2);
+        assertEquals(n.toInt(),2);
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(-2));
+        assertTrue(Integer.valueOf(2).equals(n.toInteger()));
+
+        n = Natural.valueOf(Integer.valueOf(2));
+        assertEquals(n.toInt(),2);
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(Integer.valueOf(-2)));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(null));
+
+        n.add(Natural.valueOf(2));
+        assertEquals(n,Natural.valueOf(4));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).add(null));
+        n.substract(Natural.valueOf(4));
+        assertEquals(n,Natural.valueOf(0));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).substract(Natural.valueOf(4)));
+
+        assertEquals(n.toString(),"0");
+        assertTrue(n.equals(Natural.valueOf(0)));
+        assertTrue(n.equals(n));
+        assertFalse(n.equals(Natural.valueOf(3)));
+        assertFalse(n.equals(Integer.valueOf(4)));
+        assertFalse(n.equals(null));
+
+        n.add(Natural.valueOf(2));
+        assertEquals(n.compareTo(Natural.valueOf(2)),0);
+        assertEquals(n.compareTo(Natural.valueOf(3)),1);
+        assertEquals(n.compareTo(Natural.valueOf(1)),-1);
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).compareTo(null));
+
+
     }
 
     @AfterEach

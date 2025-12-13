@@ -3,6 +3,7 @@ package re.forestier.edu.rpg;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import re.forestier.edu.lib.Natural;
 
 public class Player {
     private static final Integer[] xpForlevel = {0,10,27,57,111}; //Level = i+1 
@@ -15,7 +16,7 @@ public class Player {
     private Integer money;
     private Float __real_money__;
 
-    private int level;
+    private Natural level;
     private int healthpoints;
     private int currenthealthpoints;
     private int xp;
@@ -34,7 +35,7 @@ public class Player {
         AvatarClass = avatarClass;
         this.money = Integer.valueOf(money);
         this.inventory = inventory;
-        this.level = 1;
+        this.level = Natural.valueOf(1);
         this.xp = 0;
         this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
     }
@@ -56,7 +57,7 @@ public class Player {
 
     public int getLevel()
     {
-        return this.level;
+        return this.level.toInt();
     }
 
     public int getHealthPoints()
@@ -94,7 +95,7 @@ public class Player {
     }
 
     public void addXp(int xp) {
-        int ancientLevel = this.level;
+        Natural ancientLevel = (Natural)this.level.clone();
         this.xp += xp;
         int i = 0;
         while(i < xpForlevel.length && this.xp >= xpForlevel[i])
@@ -102,9 +103,9 @@ public class Player {
             i++;
         }
 
-        this.level = i;
+        this.level = Natural.valueOf(i);
 
-        if (this.level != ancientLevel) {
+        if (!ancientLevel.equals(this.level)) {
             // Player leveled-up!
             // Give a random object
             ;
@@ -112,7 +113,7 @@ public class Player {
             this.inventory.add(UpdatePlayer.objectList[random.nextInt(UpdatePlayer.objectList.length)]);
 
             // Add/upgrade abilities to player
-            HashMap<String, Integer> abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(this.getAvatarClass()).get(this.level);
+            HashMap<String, Integer> abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(this.getAvatarClass()).get(this.level.toInt());
             abilities.forEach((ability, level) -> {
                 this.abilities.put(ability, abilities.get(ability));
             });
