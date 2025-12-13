@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class UpdatePlayer {
 
-    public final static String[] objectList = {"Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
+    public final static String[] objectList = {"Magic bow : Heal by 1/8th of your HP","Lookout Ring : Prevents surprise attacks","Scroll of Stupidity : INT-2 when applied to an enemy", "Draupnir : Increases XP gained by 100%", "Magic Charm : Magic +10 for 5 rounds", "Rune Staff of Curse : May burn your ennemies... Or yourself. Who knows?", "Combat Edge : Well, that's an edge", "Holy Elixir : Recover your HP"
     };
 
     public static HashMap<String, HashMap<Integer, HashMap<String, Integer>>> abilitiesPerTypeAndLevel() {
@@ -105,35 +105,31 @@ public class UpdatePlayer {
             return;
         }
 
-        if(player.getCurrentHealthPoints() < player.getHealthPoints()/2) {
+        if(player.getCurrentHealthPoints() < player.getMaxHealthPoints()/2) {
             if(!player.getAvatarClass().equals("ADVENTURER")) {
                 if(player.getAvatarClass().equals("DWARF")) {
                     if(player.inventory.contains("Holy Elixir")) {
-                        player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
+                        player.heal(1);
                     }
-                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
+                    player.heal(1);
                 }
 
 
                 if(player.getAvatarClass().equals("ARCHER")) {
-                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()+1);
+                    player.heal(1);
                     if(player.inventory.contains("Magic Bow")) {
-                        player.setCurrentHealthPoints(player.getCurrentHealthPoints()+player.getCurrentHealthPoints()/8-1);
+                        //player.setCurrentHealthPoints(player.getCurrentHealthPoints()+player.getCurrentHealthPoints()/8-1);
+                        int potentialHeal = player.getCurrentHealthPoints()/8-1;
+                        player.heal(potentialHeal < 0 ? 0 : potentialHeal);
                     }
                 }
             } else {
-                player.setCurrentHealthPoints(player.getCurrentHealthPoints()+2);
+                player.heal(2);
                 if(player.getLevel() < 3) {
-                    player.setCurrentHealthPoints(player.getCurrentHealthPoints()-1);
+                    player.hurt(1);
                 }
             }
-        } else 
-        {
-            if(player.getCurrentHealthPoints() >= player.getHealthPoints()) {
-                player.setCurrentHealthPoints(player.getHealthPoints());
-                return;
-            }
-        }
+        } 
     }
 
 

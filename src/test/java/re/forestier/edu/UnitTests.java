@@ -119,70 +119,62 @@ public class UnitTests {
     @Test
     @DisplayName("majDeFinDeTour")
     void testMajFinTour() {
-        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(0);
+        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>(),10);
+        p.hurt(10);
         UpdatePlayer.majFinDeTour(p);
         assertEquals("Le joueur est KO !", outContent.toString().trim());
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p.heal(1);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(2));
         p.addXp(100);
         UpdatePlayer.majFinDeTour(p);
-        p.setCurrentHealthPoints(9);
+        p.heal(5);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(9));
-        p.setCurrentHealthPoints(11);
+        p.heal(11);
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.getCurrentHealthPoints(),is(p.getHealthPoints()));
+        assertThat(p.getCurrentHealthPoints(),is(p.getMaxHealthPoints()));
         
-        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>(),10);
+        p.hurt(9);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(2));
 
-        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(5);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, new ArrayList<>(),10);
+        p.hurt(5);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(5));
 
         ArrayList<String> inv = new ArrayList<String>();
         inv.add("Holy Elixir");
-        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, inv);
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "DWARF", 100, inv,10);
+        p.hurt(9);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(3));
 
-        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, new ArrayList<>(),10);
+        p.hurt(9);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(2));
 
-        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>(),10);
+        p.hurt(9);
         p.addXp(28);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(3));
 
         inv.add("Magic Bow");
-        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, inv);
-        p.setCurrentHealthPoints(1);
-        p.setHealthPoints(10);
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, inv,10);
+        p.hurt(9);;
         UpdatePlayer.majFinDeTour(p);
-        assertThat(p.getCurrentHealthPoints(),is(1));
-        p.setCurrentHealthPoints(16);
-        p.setHealthPoints(40);
+        assertThat(p.getCurrentHealthPoints(),is(2)); //Suite a discussion avec le client, le "Magic bow" ne peut que soigner
+        p = new Player("Florian", "Grognak le barbare", "ARCHER", 100, inv,40);
+        p.hurt(24);
         UpdatePlayer.majFinDeTour(p);
         assertThat(p.getCurrentHealthPoints(),is(17 + 17/8-1));
 
-        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>());
-        p.setCurrentHealthPoints(20);
-        p.setHealthPoints(40);
+        p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, new ArrayList<>(),40);
+        p.hurt(20);
         UpdatePlayer.majFinDeTour(p);
         assertEquals(p.getCurrentHealthPoints(),20);
     }

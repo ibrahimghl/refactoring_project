@@ -17,8 +17,8 @@ public class Player {
     private Float __real_money__;
 
     private Natural level;
-    private int healthpoints;
-    private int currenthealthpoints;
+    private Natural maxHealthPoint;
+    private Natural currentHealthPoints;
     private int xp;
 
     public HashMap<String, Integer> abilities; //Ability = stat
@@ -38,6 +38,25 @@ public class Player {
         this.level = Natural.valueOf(1);
         this.xp = 0;
         this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+    }
+
+    public Player(String playerName, String avatar_name, String avatarClass, int money, ArrayList<String> inventory, int maxHp)
+    {
+        if (!avatarClass.equals("ARCHER") && !avatarClass.equals("ADVENTURER") && !avatarClass.equals("DWARF")) 
+        {
+            return;
+        }
+
+        this.playerName = playerName;
+        Avatar_name = avatar_name;
+        AvatarClass = avatarClass;
+        this.money = Integer.valueOf(money);
+        this.inventory = inventory;
+        this.level = Natural.valueOf(1);
+        this.xp = 0;
+        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+        this.maxHealthPoint = Natural.valueOf(maxHp);
+        this.currentHealthPoints = Natural.valueOf(maxHp);
     }
 
     public String getPlayerName()
@@ -60,25 +79,38 @@ public class Player {
         return this.level.toInt();
     }
 
-    public int getHealthPoints()
+    public int getMaxHealthPoints()
     {
-        return this.healthpoints;
-    }
-
-    public void setHealthPoints(int hp)
-    {
-        this.healthpoints = hp;
+        return this.maxHealthPoint.toInt();
     }
 
     public int getCurrentHealthPoints()
     {
-        return this.currenthealthpoints;
+        return this.currentHealthPoints.toInt();
     }
 
-    public void setCurrentHealthPoints(int hp)
+    public void heal(int hp)
     {
-        this.currenthealthpoints = hp;
+        if(hp < 0 )
+        {
+            throw new IllegalArgumentException();
+        }
+        this.currentHealthPoints.add(Natural.valueOf(hp));
+        if(this.currentHealthPoints.compareTo(this.maxHealthPoint) == -1)
+        {
+            this.currentHealthPoints = (Natural)this.maxHealthPoint.clone();
+        }
     }
+
+    public void hurt(int damage)
+    {
+        if(damage < 0 )
+        {
+            throw new IllegalArgumentException();
+        }
+        this.currentHealthPoints.substract(Natural.valueOf(damage));
+    }
+
 
     public int getXp()
     {
