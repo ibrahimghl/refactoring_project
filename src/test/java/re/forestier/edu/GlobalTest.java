@@ -3,8 +3,10 @@ package re.forestier.edu;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import re.forestier.edu.rpg.Affichage;
-import re.forestier.edu.rpg.UpdatePlayer;
+import re.forestier.edu.rpg.Manager;
 import re.forestier.edu.rpg.Player;
+import re.forestier.edu.rpg.Item;
+import re.forestier.edu.rpg.Jobs;
 
 import java.util.ArrayList;
 
@@ -42,12 +44,15 @@ public class GlobalTest {
         System.setErr(originalErr);
     }
 
+
     @Test
     void testAffichageBase() {
-        Player player = new Player("Florian", "Gnognak le Barbare", "ADVENTURER", 200, new ArrayList<>());
+        Player player = new Player("Florian", "Gnognak le Barbare", Jobs.ADVENTURER, 200, new ArrayList<Item>(),10);
         player.addXp(20);
-        player.inventory = new ArrayList<>();
+        player.removeItem(player.getInventory().get(0));
         Affichage.afficherJoueur(player);
         verify(outContent );
     }
+
+    
 }

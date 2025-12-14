@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Affichage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kata</a> &gt; <a href="index.source.html" class="el_package">re.forestier.edu.rpg</a> &gt; <span class="el_source">Affichage.java</span></div><h1>Affichage.java</h1><pre class="source lang-java linenums">package re.forestier.edu.rpg;
 
-<span class="fc" id="L3">public class Affichage {</span>
+import java.io.File;  
+import java.io.IOException;  
+import java.io.FileWriter; 
 
-    public static String afficherJoueur(Player player) {
-<span class="fc" id="L6">        final String[] finalString = {&quot;Joueur &quot; + player.getAvatarName() + &quot; joué par &quot; + player.getPlayerName()};</span>
-<span class="fc" id="L7">        finalString[0] += &quot;\nNiveau : &quot; + player.retrieveLevel() + &quot; (XP totale : &quot; + player.getXp() + &quot;)&quot;;</span>
-<span class="fc" id="L8">        finalString[0] += &quot;\n\nCapacités :&quot;;</span>
-<span class="fc" id="L9">        player.abilities.forEach((name, level) -&gt; {</span>
-<span class="fc" id="L10">            finalString[0] += &quot;\n   &quot; + name + &quot; : &quot; + level;</span>
-<span class="fc" id="L11">        });</span>
-<span class="fc" id="L12">        finalString[0] += &quot;\n\nInventaire :&quot;;</span>
-<span class="fc" id="L13">        player.inventory.forEach(item -&gt; {</span>
-<span class="fc" id="L14">            finalString[0] += &quot;\n   &quot; + item;</span>
-<span class="fc" id="L15">        });</span>
 
-<span class="fc" id="L17">        return finalString[0];</span>
-    }
+<span class="pc" id="L8">public class Affichage {</span>
+
+    public static void afficherJoueur(Player player) 
+    {
+<span class="pc bpc" id="L12" title="1 of 2 branches missed.">        assert player != null : &quot;Player must be non null&quot;;</span>
+<span class="fc" id="L13">        System.out.println(player.toString());</span>
+<span class="fc" id="L14">    }</span>
+
+    public static void playerToMarkDown(Player p)
+    {
+<span class="nc bnc" id="L18" title="All 2 branches missed.">        assert p != null : &quot;Player must be non null&quot;;</span>
+        try 
+        {
+<span class="nc" id="L21">            File playerFile = new File(&quot;./&quot;+p.getAvatarName()+&quot;.md&quot;);</span>
+<span class="nc" id="L22">            FileWriter myWriter = new FileWriter(playerFile);</span>
+<span class="nc" id="L23">            myWriter.write(p.toMarkDown());</span>
+<span class="nc" id="L24">            myWriter.close();</span>
+<span class="nc" id="L25">        } catch (IOException e) </span>
+        {
+<span class="nc" id="L27">            System.err.println(&quot;An error occurred.&quot;);</span>
+<span class="nc" id="L28">            e.printStackTrace();</span>
+<span class="nc" id="L29">        }</span>
+<span class="nc" id="L30">    }</span>
+
+    public static void playerToMarkDown(Player p, String path)
+    {
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        assert p != null : &quot;Player must be non null&quot;;</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        assert path != null : &quot;Path must be non null&quot;;</span>
+        try 
+        {
+<span class="nc" id="L38">            File playerFile = new File(path+p.getAvatarName()+&quot;.md&quot;);</span>
+<span class="nc" id="L39">            FileWriter myWriter = new FileWriter(playerFile);</span>
+<span class="nc" id="L40">            myWriter.write(p.toMarkDown());</span>
+<span class="nc" id="L41">            myWriter.close();</span>
+<span class="nc" id="L42">        } catch (IOException e) </span>
+        {
+<span class="nc" id="L44">            System.err.println(&quot;An error occurred.&quot;);</span>
+<span class="nc" id="L45">            e.printStackTrace();</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
