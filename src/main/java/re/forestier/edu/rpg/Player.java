@@ -6,38 +6,31 @@ import java.util.HashMap;
 import re.forestier.edu.lib.Natural;
 
 public class Player {
+    private static final Natural defaultMaxHp = Natural.valueOf(20);
     private static final Integer[] xpForlevel = {0,10,27,57,111}; //Level = i+1 
                                                                   //TODO : add level
 
     private String playerName;
-    private String Avatar_name;
-    private String AvatarClass;
+    private String avatarName;
+    private String avatarClass;
 
-    private Integer money;
-    private Float __real_money__;
+    private Natural money;
 
     private Natural level;
     private Natural maxHealthPoint;
     private Natural currentHealthPoints;
-    private int xp;
+    private Natural xp;
 
     public HashMap<String, Integer> abilities; //Ability = stat
     public ArrayList<String> inventory;
 
     public Player(String playerName, String avatar_name, String avatarClass, int money, ArrayList<String> inventory) {
-        if (!avatarClass.equals("ARCHER") && !avatarClass.equals("ADVENTURER") && !avatarClass.equals("DWARF")) 
-        {
-            return;
-        }
+        this(playerName,avatar_name,avatarClass,money,inventory,Player.defaultMaxHp.toInt());
+    }
 
-        this.playerName = playerName;
-        Avatar_name = avatar_name;
-        AvatarClass = avatarClass;
-        this.money = Integer.valueOf(money);
-        this.inventory = inventory;
-        this.level = Natural.valueOf(1);
-        this.xp = 0;
-        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+    private Player()
+    {
+        //Here to prevent the compilator to create default constructor
     }
 
     public Player(String playerName, String avatar_name, String avatarClass, int money, ArrayList<String> inventory, int maxHp)
@@ -48,13 +41,13 @@ public class Player {
         }
 
         this.playerName = playerName;
-        Avatar_name = avatar_name;
-        AvatarClass = avatarClass;
-        this.money = Integer.valueOf(money);
+        this.avatarName = avatar_name;
+        this.avatarClass = avatarClass;
+        this.money = Natural.valueOf(money);
         this.inventory = inventory;
         this.level = Natural.valueOf(1);
-        this.xp = 0;
-        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(AvatarClass).get(1);
+        this.xp = Natural.valueOf(0);
+        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(this.avatarClass).get(1);
         this.maxHealthPoint = Natural.valueOf(maxHp);
         this.currentHealthPoints = Natural.valueOf(maxHp);
     }
@@ -66,12 +59,12 @@ public class Player {
             
     public String getAvatarName()
     {
-        return this.Avatar_name;
+        return this.avatarName;
     }
             
     public Integer getMoney()
     {
-        return this.money;
+        return this.money.toInt();
     }
 
     public int getLevel()
@@ -114,23 +107,18 @@ public class Player {
 
     public int getXp()
     {
-        return this.xp;
-    }
-
-    public void setXp(int xp)
-    {
-        this.xp = xp;
+        return this.xp.toInt();
     }
 
     public String getAvatarClass () {
-        return AvatarClass;
+        return this.avatarClass;
     }
 
     public void addXp(int xp) {
         Natural ancientLevel = (Natural)this.level.clone();
-        this.xp += xp;
+        this.xp.add(Natural.valueOf(xp));
         int i = 0;
-        while(i < xpForlevel.length && this.xp >= xpForlevel[i])
+        while(i < xpForlevel.length && this.xp.toInt() >= xpForlevel[i])
         {
             i++;
         }
@@ -152,14 +140,40 @@ public class Player {
         }
     }
 
-    public void removeMoney(int amount) throws IllegalArgumentException {
-        if (money - amount < 0) {
+    public void removeMoney(int amount)
+    {
+        Natural toRemove = Natural.valueOf(amount);
+        if (this.money.compareTo(toRemove) == 1) 
+        {
             throw new IllegalArgumentException("Player can't have a negative money!");
         }
-
-        money = Integer.parseInt(money.toString()) - amount;
+        this.money.substract(toRemove);
     }
-    public void addMoney(int amount) { 
-        money = money + amount;
+    public void addMoney(int amount) 
+    { 
+        Natural toAdd = Natural.valueOf(amount);
+        this.money.add(toAdd);
+    }
+
+    @Override 
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder("Joueur ");
+        sb.append(this.avatarName);
+        sb.append(" joué par ");
+        sb.append(this.playerName);
+        sb.append("\nNiveau : ");
+        sb.append(this.level.toInt());
+        sb.append(" (XP totale : ");
+        sb.append(this.xp);
+        sb.append(")\n\nCapacités :");
+        this.abilities.forEach((name, level) -> {
+            sb.append("\n   " + name + " : " + level);
+        });
+        sb.append("\n\nInventaire :");
+        this.inventory.forEach(item -> {
+            sb.append("\n   " + item);
+        });
+        return sb.toString();
     }
 }

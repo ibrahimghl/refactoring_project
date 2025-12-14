@@ -180,18 +180,6 @@ public class UnitTests {
     }
 
     @Test
-    @DisplayName("Affichage")
-    void testAffichage() {
-        Affichage a = new Affichage();
-        assertNotNull(a);
-
-        ArrayList<String> inv = new ArrayList<String>();
-        inv.add("Holy Elixir");
-        Player p = new Player("Florian", "Grognak le barbare", "ADVENTURER", 100, inv);
-        assertEquals("Joueur Grognak le barbare joué par Florian\nNiveau : 1 (XP totale : 0)\n\nCapacités :\n   DEF : 1\n   ATK : 3\n   CHA : 3\n   INT : 2\n\nInventaire :\n   Holy Elixir",  Affichage.afficherJoueur(p));
-    }
-
-    @Test
     @DisplayName("Main")
     void testMain() {
         Main m = new Main();

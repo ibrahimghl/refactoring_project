@@ -106,28 +106,27 @@ public class UpdatePlayer {
         }
 
         if(player.getCurrentHealthPoints() < player.getMaxHealthPoints()/2) {
-            if(!player.getAvatarClass().equals("ADVENTURER")) {
-                if(player.getAvatarClass().equals("DWARF")) {
+            switch(player.getAvatarClass())
+            {
+                case "ADVENTURER" :
+                    player.heal(2);
+                    if(player.getLevel() < 3) {
+                        player.hurt(1);
+                    }
+                    break;
+                case "DWARF" :
+                    player.heal(1);
                     if(player.inventory.contains("Holy Elixir")) {
                         player.heal(1);
                     }
-                    player.heal(1);
-                }
-
-
-                if(player.getAvatarClass().equals("ARCHER")) {
+                    break;
+                case "ARCHER" :
                     player.heal(1);
                     if(player.inventory.contains("Magic Bow")) {
-                        //player.setCurrentHealthPoints(player.getCurrentHealthPoints()+player.getCurrentHealthPoints()/8-1);
                         int potentialHeal = player.getCurrentHealthPoints()/8-1;
                         player.heal(potentialHeal < 0 ? 0 : potentialHeal);
                     }
-                }
-            } else {
-                player.heal(2);
-                if(player.getLevel() < 3) {
-                    player.hurt(1);
-                }
+                    break;
             }
         } 
     }
