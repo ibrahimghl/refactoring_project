@@ -11,11 +11,6 @@ public class Item implements Cloneable
 
 	public Item(String name, String description, Natural weight, Natural value)
 	{
-		assert name != null : "Name must be non null";
-		assert description != null : "Description must be non null";
-		assert weight != null : "Weight must be non null";
-		assert value != null : "Value must be non null";
-
 		this.name = name;
 		this.description = description;
 		this.weight = weight;
@@ -24,7 +19,6 @@ public class Item implements Cloneable
 
 	Item(String name)
 	{
-		assert name != null : "Name must be non null";
 		this.name = name;
 		this.description = "Is used to search in list, if you see me, there is a problem";
 	}

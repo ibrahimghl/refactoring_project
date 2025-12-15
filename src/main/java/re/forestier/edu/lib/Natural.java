@@ -11,7 +11,9 @@ public class Natural implements Comparable<Natural>, Cloneable
     }
 
     private Natural(Integer i)
-    {        
+    {
+        if(i == null)
+            throw new IllegalArgumentException();
         if(i < 0)
             throw new IllegalArgumentException("Natural >=0");
         this.value = i;
@@ -36,8 +38,8 @@ public class Natural implements Comparable<Natural>, Cloneable
 
     public static Natural valueOf(Integer i)
     {
-        assert i != null : "Argument must be non null";
-
+        if(i == null)
+            throw new IllegalArgumentException();
         return new Natural(i);
     }
 
@@ -48,17 +50,16 @@ public class Natural implements Comparable<Natural>, Cloneable
 
     public void add(Natural n)
     {
-        assert n != null : "Argument must be non null";
-
+        if(n == null)
+            throw new IllegalArgumentException();
         this.value += n.toInt();
     }
 
 
     public void substract(Natural n)
     {
-        assert n != null : "Argument must be non null";
-        if(this.compareTo(n) == 1)
-            throw new IllegalArgumentException("Too great to substract.");
+        if(n == null || this.compareTo(n) == 1)
+            throw new IllegalArgumentException();
         this.value -= n.toInt();
     } 
 
@@ -89,7 +90,8 @@ public class Natural implements Comparable<Natural>, Cloneable
     @Override
     public int compareTo(Natural n)
     {
-        assert n != null : "Argument must be non null";
+        if(n == null)
+            throw new IllegalArgumentException();
         if(n.value > this.value)
             return 1;
         else if(n.value == this.value)

@@ -53,6 +53,4 @@ public class GlobalTest {
         Affichage.afficherJoueur(player);
         verify(outContent );
     }
-
-    
 }

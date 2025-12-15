@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="re.forestier.edu.UnitTests" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-12-15T02:13:27" hostname="ibrahim-VirtualBox" time="0.136">
+<testsuite name="re.forestier.edu.UnitTests" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-12-15T10:50:30" hostname="ibrahim-VirtualBox" time="0.165">
   <properties/>
-  <testcase name="Item tests" classname="re.forestier.edu.UnitTests" time="0.016"/>
+  <testcase name="Item tests" classname="re.forestier.edu.UnitTests" time="0.022"/>
   <testcase name="Main" classname="re.forestier.edu.UnitTests" time="0.006"/>
   <testcase name="removeMoney" classname="re.forestier.edu.UnitTests" time="0.015"/>
-  <testcase name="ex &amp; lvl" classname="re.forestier.edu.UnitTests" time="0.006"/>
-  <testcase name="addMoney" classname="re.forestier.edu.UnitTests" time="0.009"/>
-  <testcase name="Heal and hurt" classname="re.forestier.edu.UnitTests" time="0.003"/>
-  <testcase name="Item and player" classname="re.forestier.edu.UnitTests" time="0.004"/>
-  <testcase name="Construcor Manager" classname="re.forestier.edu.UnitTests" time="0.005"/>
-  <testcase name="majDeFinDeTour" classname="re.forestier.edu.UnitTests" time="0.007"/>
+  <testcase name="ex &amp; lvl" classname="re.forestier.edu.UnitTests" time="0.008"/>
+  <testcase name="addMoney" classname="re.forestier.edu.UnitTests" time="0.008"/>
+  <testcase name="Heal and hurt" classname="re.forestier.edu.UnitTests" time="0.004"/>
+  <testcase name="Item and player" classname="re.forestier.edu.UnitTests" time="0.005"/>
+  <testcase name="Construcor Manager" classname="re.forestier.edu.UnitTests" time="0.007"/>
+  <testcase name="majDeFinDeTour" classname="re.forestier.edu.UnitTests" time="0.009"/>
   <testcase name="Constructor Player" classname="re.forestier.edu.UnitTests" time="0.005"/>
-  <testcase name="Natural Tests" classname="re.forestier.edu.UnitTests" time="0.009"/>
-  <testcase name="Sample test" classname="re.forestier.edu.UnitTests" time="0.004"/>
+  <testcase name="Natural Tests" classname="re.forestier.edu.UnitTests" time="0.011"/>
+  <testcase name="Sample test" classname="re.forestier.edu.UnitTests" time="0.008"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

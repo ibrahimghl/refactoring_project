@@ -245,17 +245,16 @@ public class UnitTests {
         assertEquals(n.toInt(),2);
         assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(-2));
         assertTrue(Integer.valueOf(2).equals(n.toInteger()));
-        assertThrows(AssertionError.class, () -> Natural.valueOf((Integer)null));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf((Integer)null));
 
         n = Natural.valueOf(Integer.valueOf(2));
         assertEquals(n.toInt(),2);
         assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(Integer.valueOf(-2)));
-        assertThrows(AssertionError.class, () -> Natural.valueOf(null));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(null));
 
         n.add(Natural.valueOf(2));
         assertEquals(n,Natural.valueOf(4));
-        assertThrows(AssertionError.class, () -> Natural.valueOf(0).add(null));
-        assertThrows(AssertionError.class, () -> Natural.valueOf(0).substract(null));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).add(null));
         n.substract(Natural.valueOf(4));
         assertEquals(n,Natural.valueOf(0));
         assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).substract(Natural.valueOf(4)));
@@ -271,7 +270,7 @@ public class UnitTests {
         assertEquals(n.compareTo(Natural.valueOf(2)),0);
         assertEquals(n.compareTo(Natural.valueOf(3)),1);
         assertEquals(n.compareTo(Natural.valueOf(1)),-1);
-        assertThrows(AssertionError.class, () -> Natural.valueOf(0).compareTo(null));
+        assertThrows(IllegalArgumentException.class, () -> Natural.valueOf(0).compareTo(null));
 
 
     }

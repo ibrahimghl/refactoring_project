@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fr"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Manager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kata</a> &gt; <a href="index.source.html" class="el_package">re.forestier.edu.rpg</a> &gt; <span class="el_source">Manager.java</span></div><h1>Manager.java</h1><pre class="source lang-java linenums">package re.forestier.edu.rpg;
+
+import java.util.HashMap;
+import java.util.Random;
+import re.forestier.edu.lib.Natural;
+
+<span class="fc" id="L7">public class Manager {</span>
+
+<span class="fc" id="L9">    public final static Item[] objectList = {</span>
+<span class="fc" id="L10">        new Item(&quot;Magic bow&quot;, &quot;Heal by 1/8th of your HP&quot;,Natural.valueOf(0),Natural.valueOf(0)),</span>
+<span class="fc" id="L11">        new Item(&quot;Lookout Ring&quot;,&quot;Prevents surprise attacks&quot;,Natural.valueOf(0),Natural.valueOf(0)),</span>
+<span class="fc" id="L12">        new Item(&quot;Scroll of Stupidity&quot;,&quot;INT-2 when applied to an enemy&quot;,Natural.valueOf(0),Natural.valueOf(0)), </span>
+<span class="fc" id="L13">        new Item(&quot;Draupnir&quot;, &quot;Increases XP gained by 100%&quot;,Natural.valueOf(0),Natural.valueOf(0)), </span>
+<span class="fc" id="L14">        new Item(&quot;Magic Charm&quot;,&quot;Magic +10 for 5 rounds&quot;,Natural.valueOf(0),Natural.valueOf(0)), </span>
+<span class="fc" id="L15">        new Item(&quot;Rune Staff of Curse&quot;,&quot;May burn your ennemies... Or yourself. Who knows?&quot;,Natural.valueOf(0),Natural.valueOf(0)),</span>
+<span class="fc" id="L16">        new Item(&quot;Combat Edge&quot;,&quot;Well, that's an edge&quot;,Natural.valueOf(0),Natural.valueOf(0)), </span>
+<span class="fc" id="L17">        new Item(&quot;Holy Elixir&quot;,&quot;Recover your HP&quot;,Natural.valueOf(0),Natural.valueOf(0))</span>
+    }; //SHOULDDO : Instantiate from file (xml)
+       //Since we don't have value for weight and value, we put neutral
+
+    // majFinDeTour met à jour les points de vie
+    public static void majFinDeTour(Player player) {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if(player.getCurrentHealthPoints() == 0) {</span>
+<span class="fc" id="L24">            System.out.println(&quot;Le joueur est KO !&quot;);</span>
+<span class="fc" id="L25">            return;</span>
+        }
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        if(player.getCurrentHealthPoints() &lt; player.getMaxHealthPoints()/2) {</span>
+<span class="pc bpc" id="L29" title="1 of 4 branches missed.">            switch(player.getAvatarClass())</span>
+            {
+                case ADVENTURER :
+<span class="fc" id="L32">                    player.heal(2);</span>
+<span class="fc bfc" id="L33" title="All 2 branches covered.">                    if(player.getLevel() &lt; 3) {</span>
+<span class="fc" id="L34">                        player.hurt(1);</span>
+                    }
+                    break;
+                case DWARF :
+<span class="fc" id="L38">                    player.heal(1);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">                    if(player.getInventory().contains(new Item(&quot;Holy Elixir&quot;))) {</span>
+<span class="fc" id="L40">                        player.heal(1);</span>
+                    }
+                    break;
+                case ARCHER :
+<span class="fc" id="L44">                    player.heal(1);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">                    if(player.getInventory().contains(new Item(&quot;Magic Bow&quot;))) {</span>
+<span class="fc" id="L46">                        int potentialHeal = player.getCurrentHealthPoints()/8-1;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                        player.heal(potentialHeal &lt; 0 ? 0 : potentialHeal);</span>
+                    }
+                    break;
+            }
+        } 
+<span class="fc" id="L52">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

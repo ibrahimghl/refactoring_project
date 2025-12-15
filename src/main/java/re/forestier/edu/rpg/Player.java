@@ -40,11 +40,6 @@ public class Player {
 
     public Player(String playerName, String avatar_name, Jobs avatarClass, int money, ArrayList<Item> inventory, int maxHp, int maxWeight)
     {
-        assert playerName != null : "Player name can't be null";
-        assert avatar_name != null : "Avatar name can't be null";
-        assert avatarClass != null : "Avatar class can't be null";
-        assert inventory != null : "Inventory can't be null";
-
         this.playerName = playerName;
         this.avatarName = avatar_name;
         this.avatarClass = avatarClass;
@@ -129,7 +124,6 @@ public class Player {
 
     public void addItem(Item i)
     {
-        assert i != null : "Argument must be non null";
         Natural w = (Natural)this.weight.clone();
         w.add(i.getWeight());
         if(w.compareTo(this.maxWeight) == -1)
@@ -144,7 +138,6 @@ public class Player {
 
     public void removeItem(Item i)
     {
-        assert i != null : "Argument must be non null";
         if(!this.inventory.contains(i))
         {
             throw new UnsupportedOperationException("Can't remove what player don't have");
@@ -155,7 +148,6 @@ public class Player {
 
     public void buy(Item i)
     {
-        assert i != null : "Argument must be non null";
         if(this.money.compareTo(i.getValue()) == 1)
         {
             throw new UnsupportedOperationException("Player doesn't have enough money.");
@@ -176,7 +168,6 @@ public class Player {
 
     public void sell(Item i)
     {
-        assert i != null : "Argument must be non null";
         if(!this.inventory.contains(i))
         {
             throw new UnsupportedOperationException("Player can't sell what they don't own.");
@@ -271,35 +262,6 @@ public class Player {
         sb.append("\n\nInventaire :");
         this.inventory.forEach(item -> {
             sb.append("\n   " + item);
-        });
-        return sb.toString();
-    }
-
-    public String toMarkDown()
-    {
-        StringBuilder sb = new StringBuilder("#Joueur ");
-        sb.append(this.avatarName);
-        sb.append("#\n**Joué par ");
-        sb.append(this.playerName);
-        sb.append("**\n**Niveau : ");
-        sb.append(this.level.toInt());
-        sb.append("** (XP totale : ");
-        sb.append(this.xp);
-        sb.append(")\n\n##Capacités :##");
-
-        ArrayList<Ability> abilitiesKey = new ArrayList<Ability>(this.abilities.keySet());
-        Collections.sort(abilitiesKey);
-        for(Ability a : abilitiesKey)
-        {
-            if(this.abilities.get(a) != 0)
-            {
-                sb.append("\n*" + a.toString() + " : " + this.abilities.get(a));
-            } 
-        } 
-
-        sb.append("\n\n##Inventaire :##");
-        this.inventory.forEach(item -> {
-            sb.append("\n*" + item);
         });
         return sb.toString();
     }

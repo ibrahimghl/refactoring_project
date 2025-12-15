@@ -19,9 +19,7 @@ public class Manager {
        //Since we don't have value for weight and value, we put neutral
 
     // majFinDeTour met à jour les points de vie
-    public static void majFinDeTour(Player player) 
-    {
-        assert player != null : "Player must be non null";
+    public static void majFinDeTour(Player player) {
         if(player.getCurrentHealthPoints() == 0) {
             System.out.println("Le joueur est KO !");
             return;
