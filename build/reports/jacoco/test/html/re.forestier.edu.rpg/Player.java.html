@@ -3,16 +3,23 @@
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Collections;
 import re.forestier.edu.lib.Natural;
 
 public class Player {
-<span class="fc" id="L9">    private static final Natural defaultMaxHp = Natural.valueOf(20);</span>
-<span class="fc" id="L10">    private static final Integer[] xpForlevel = {0,10,27,57,111}; //Level = i+1 </span>
-                                                                  //TODO : add level
+<span class="fc" id="L10">    private static final Natural defaultMaxHp = Natural.valueOf(20);</span>
+<span class="fc" id="L11">    private static final Natural[] xpForlevel = {</span>
+<span class="fc" id="L12">        Natural.valueOf(0),</span>
+<span class="fc" id="L13">        Natural.valueOf(10),</span>
+<span class="fc" id="L14">        Natural.valueOf(27),</span>
+<span class="fc" id="L15">        Natural.valueOf(57),</span>
+<span class="fc" id="L16">        Natural.valueOf(111)</span>
+    }; //Level = i+1 
+       //We consider that level is a player thing, not a job one.
 
     private String playerName;
     private String avatarName;
-    private String avatarClass;
+    public Jobs avatarClass;
 
     private Natural money;
 
@@ -20,161 +27,281 @@ public class Player {
     private Natural maxHealthPoint;
     private Natural currentHealthPoints;
     private Natural xp;
+    private Natural maxWeight;
+    private Natural weight;
 
-    public HashMap&lt;String, Integer&gt; abilities; //Ability = stat
-    public ArrayList&lt;String&gt; inventory;
+    private final HashMap&lt;Ability, Integer&gt; abilities; //Ability = stat
+                                                       //SHOULDDO : have another hashmap to have contextual modifier (items,...)
+    private ArrayList&lt;Item&gt; inventory;
 
-    public Player(String playerName, String avatar_name, String avatarClass, int money, ArrayList&lt;String&gt; inventory) {
-<span class="fc" id="L28">        this(playerName,avatar_name,avatarClass,money,inventory,Player.defaultMaxHp.toInt());</span>
-<span class="fc" id="L29">    }</span>
+    public Player(String playerName, String avatar_name, Jobs avatarClass, int money, ArrayList&lt;Item&gt; inventory, int maxWeight) {
+<span class="fc" id="L38">        this(playerName,avatar_name,avatarClass,money,inventory,Player.defaultMaxHp.toInt(),maxWeight);</span>
+<span class="fc" id="L39">    }</span>
 
-    private Player()
-    {
-        //Here to prevent the compilator to create default constructor
-    }
+    public Player(String playerName, String avatar_name, Jobs avatarClass, int money, ArrayList&lt;Item&gt; inventory, int maxHp, int maxWeight)
+<span class="fc" id="L42">    {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        assert playerName != null : &quot;Player name can't be null&quot;;</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        assert avatar_name != null : &quot;Avatar name can't be null&quot;;</span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        assert avatarClass != null : &quot;Avatar class can't be null&quot;;</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        assert inventory != null : &quot;Inventory can't be null&quot;;</span>
 
-    public Player(String playerName, String avatar_name, String avatarClass, int money, ArrayList&lt;String&gt; inventory, int maxHp)
-<span class="fc" id="L37">    {</span>
-<span class="fc bfc" id="L38" title="All 6 branches covered.">        if (!avatarClass.equals(&quot;ARCHER&quot;) &amp;&amp; !avatarClass.equals(&quot;ADVENTURER&quot;) &amp;&amp; !avatarClass.equals(&quot;DWARF&quot;)) </span>
+<span class="fc" id="L48">        this.playerName = playerName;</span>
+<span class="fc" id="L49">        this.avatarName = avatar_name;</span>
+<span class="fc" id="L50">        this.avatarClass = avatarClass;</span>
+<span class="fc" id="L51">        this.money = Natural.valueOf(money);</span>
+<span class="fc" id="L52">        this.inventory = inventory;</span>
+<span class="fc" id="L53">        this.level = Natural.valueOf(1);</span>
+<span class="fc" id="L54">        this.xp = Natural.valueOf(0);</span>
+<span class="fc" id="L55">        this.abilities = new HashMap&lt;Ability, Integer&gt;();</span>
+<span class="fc" id="L56">        avatarClass.getAbilityPerLevel().forEach((ability,value)-&gt;</span>
+<span class="fc" id="L57">            {this.abilities.put(ability,value[0]);}</span>
+        );
+<span class="fc" id="L59">        this.maxWeight = Natural.valueOf(maxWeight);</span>
+<span class="fc" id="L60">        this.weight = Natural.valueOf(0);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        for(Item i : inventory)</span>
         {
-<span class="fc" id="L40">            return;</span>
+<span class="fc" id="L63">            this.weight.add(i.getWeight());</span>
+<span class="fc" id="L64">        }</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(this.weight.compareTo(this.maxWeight) == -1)</span>
+        {
+<span class="nc" id="L67">            throw  new UnsupportedOperationException(&quot;The player have too much to carry in theyr inventory&quot;);</span>
         }
-
-<span class="fc" id="L43">        this.playerName = playerName;</span>
-<span class="fc" id="L44">        this.avatarName = avatar_name;</span>
-<span class="fc" id="L45">        this.avatarClass = avatarClass;</span>
-<span class="fc" id="L46">        this.money = Natural.valueOf(money);</span>
-<span class="fc" id="L47">        this.inventory = inventory;</span>
-<span class="fc" id="L48">        this.level = Natural.valueOf(1);</span>
-<span class="fc" id="L49">        this.xp = Natural.valueOf(0);</span>
-<span class="fc" id="L50">        this.abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(this.avatarClass).get(1);</span>
-<span class="fc" id="L51">        this.maxHealthPoint = Natural.valueOf(maxHp);</span>
-<span class="fc" id="L52">        this.currentHealthPoints = Natural.valueOf(maxHp);</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L69">        this.maxHealthPoint = Natural.valueOf(maxHp);</span>
+<span class="fc" id="L70">        this.currentHealthPoints = Natural.valueOf(maxHp);</span>
+<span class="fc" id="L71">    }</span>
 
     public String getPlayerName()
     {
-<span class="fc" id="L57">        return this.playerName;</span>
+<span class="fc" id="L75">        return this.playerName;</span>
     }
             
     public String getAvatarName()
     {
-<span class="fc" id="L62">        return this.avatarName;</span>
+<span class="fc" id="L80">        return this.avatarName;</span>
     }
             
     public Integer getMoney()
     {
-<span class="fc" id="L67">        return this.money.toInt();</span>
+<span class="fc" id="L85">        return this.money.toInt();</span>
     }
 
     public int getLevel()
     {
-<span class="fc" id="L72">        return this.level.toInt();</span>
+<span class="fc" id="L90">        return this.level.toInt();</span>
     }
 
     public int getMaxHealthPoints()
     {
-<span class="fc" id="L77">        return this.maxHealthPoint.toInt();</span>
+<span class="fc" id="L95">        return this.maxHealthPoint.toInt();</span>
     }
 
     public int getCurrentHealthPoints()
     {
-<span class="fc" id="L82">        return this.currentHealthPoints.toInt();</span>
+<span class="fc" id="L100">        return this.currentHealthPoints.toInt();</span>
+    }
+
+    public HashMap&lt;Ability,Integer&gt; getAbilities()
+    {
+<span class="fc" id="L105">        HashMap&lt;Ability,Integer&gt; copy = new HashMap&lt;Ability,Integer&gt;(); //In doubt, deep copy</span>
+<span class="fc" id="L106">        this.abilities.forEach((key,value) -&gt; {</span>
+<span class="fc" id="L107">            copy.put(key,value);}</span>
+        );
+<span class="fc" id="L109">        return copy;</span>
+    }
+
+    public ArrayList&lt;Item&gt; getInventory()
+    {
+<span class="fc" id="L114">        return new ArrayList&lt;Item&gt;(this.inventory);</span>
     }
 
     public void heal(int hp)
     {
-<span class="fc bfc" id="L87" title="All 2 branches covered.">        if(hp &lt; 0 )</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if(hp &lt; 0 )</span>
         {
-<span class="fc" id="L89">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L121">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L91">        this.currentHealthPoints.add(Natural.valueOf(hp));</span>
-<span class="fc bfc" id="L92" title="All 2 branches covered.">        if(this.currentHealthPoints.compareTo(this.maxHealthPoint) == -1)</span>
+<span class="fc" id="L123">        this.currentHealthPoints.add(Natural.valueOf(hp));</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">        if(this.currentHealthPoints.compareTo(this.maxHealthPoint) == -1)</span>
         {
-<span class="fc" id="L94">            this.currentHealthPoints = (Natural)this.maxHealthPoint.clone();</span>
+<span class="fc" id="L126">            this.currentHealthPoints = (Natural)this.maxHealthPoint.clone();</span>
         }
-<span class="fc" id="L96">    }</span>
+<span class="fc" id="L128">    }</span>
+
+    public void addItem(Item i)
+    {
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        assert i != null : &quot;Argument must be non null&quot;;</span>
+<span class="nc" id="L133">        Natural w = (Natural)this.weight.clone();</span>
+<span class="nc" id="L134">        w.add(i.getWeight());</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">        if(w.compareTo(this.maxWeight) == -1)</span>
+        {
+<span class="nc" id="L137">            throw new UnsupportedOperationException(&quot;Player can't carry more.&quot;);</span>
+
+        }
+
+<span class="nc" id="L141">        this.weight.add(i.getWeight());</span>
+<span class="nc" id="L142">        this.inventory.add(i);</span>
+<span class="nc" id="L143">    }</span>
+
+    public void removeItem(Item i)
+    {
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        assert i != null : &quot;Argument must be non null&quot;;</span>
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if(!this.inventory.contains(i))</span>
+        {
+<span class="nc" id="L150">            throw new UnsupportedOperationException(&quot;Can't remove what player don't have&quot;);</span>
+        }
+<span class="fc" id="L152">        this.weight.substract(i.getWeight());</span>
+<span class="fc" id="L153">        this.inventory.remove(i);</span>
+<span class="fc" id="L154">    }</span>
+
+    public void buy(Item i)
+    {
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">        assert i != null : &quot;Argument must be non null&quot;;</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if(this.money.compareTo(i.getValue()) == 1)</span>
+        {
+<span class="fc" id="L161">            throw new UnsupportedOperationException(&quot;Player doesn't have enough money.&quot;);</span>
+        }
+
+<span class="fc" id="L164">        Natural w = (Natural)this.weight.clone();</span>
+<span class="fc" id="L165">        w.add(i.getWeight());</span>
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if(w.compareTo(this.maxWeight) == -1)</span>
+        {
+<span class="nc" id="L168">            throw new UnsupportedOperationException(&quot;Player can't carry more.&quot;);</span>
+
+        }
+
+<span class="fc" id="L172">        this.removeMoney(i.getValue().toInt());</span>
+<span class="fc" id="L173">        this.weight.add(i.getWeight());</span>
+<span class="fc" id="L174">        this.inventory.add(i);</span>
+<span class="fc" id="L175">    }</span>
+
+    public void sell(Item i)
+    {
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        assert i != null : &quot;Argument must be non null&quot;;</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        if(!this.inventory.contains(i))</span>
+        {
+<span class="fc" id="L182">            throw new UnsupportedOperationException(&quot;Player can't sell what they don't own.&quot;);</span>
+        }
+
+<span class="fc" id="L185">        this.inventory.remove(i);</span>
+<span class="fc" id="L186">        this.weight.substract(i.getWeight());</span>
+<span class="fc" id="L187">        this.addMoney(i.getValue().toInt());</span>
+<span class="fc" id="L188">    }</span>
 
     public void hurt(int damage)
     {
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        if(damage &lt; 0 )</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if(damage &lt; 0 )</span>
         {
-<span class="fc" id="L102">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L194">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L104">        this.currentHealthPoints.substract(Natural.valueOf(damage));</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L196">        this.currentHealthPoints.substract(Natural.valueOf(damage));</span>
+<span class="fc" id="L197">    }</span>
 
 
     public int getXp()
     {
-<span class="fc" id="L110">        return this.xp.toInt();</span>
+<span class="fc" id="L202">        return this.xp.toInt();</span>
     }
 
-    public String getAvatarClass () {
-<span class="fc" id="L114">        return this.avatarClass;</span>
+    public Jobs getAvatarClass () {
+<span class="fc" id="L206">        return this.avatarClass;</span>
     }
 
     public void addXp(int xp) {
-<span class="fc" id="L118">        Natural ancientLevel = (Natural)this.level.clone();</span>
-<span class="fc" id="L119">        this.xp.add(Natural.valueOf(xp));</span>
-<span class="fc" id="L120">        int i = 0;</span>
-<span class="fc bfc" id="L121" title="All 4 branches covered.">        while(i &lt; xpForlevel.length &amp;&amp; this.xp.toInt() &gt;= xpForlevel[i])</span>
+<span class="fc" id="L210">        Natural ancientLevel = (Natural)this.level.clone();</span>
+<span class="fc" id="L211">        this.xp.add(Natural.valueOf(xp));</span>
+<span class="fc" id="L212">        int i = 0;</span>
+<span class="fc bfc" id="L213" title="All 4 branches covered.">        while(i &lt; xpForlevel.length &amp;&amp; this.xp.compareTo(xpForlevel[i]) &lt;= 0)</span>
         {
-<span class="fc" id="L123">            i++;</span>
+<span class="fc" id="L215">            i++;</span>
         }
 
-<span class="fc" id="L126">        this.level = Natural.valueOf(i);</span>
+<span class="fc" id="L218">        this.level = Natural.valueOf(i);</span>
 
-<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (!ancientLevel.equals(this.level)) {</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (!ancientLevel.equals(this.level)) {</span>
             // Player leveled-up!
             // Give a random object
-            ;
-<span class="fc" id="L132">            Random random = new Random();</span>
-<span class="fc" id="L133">            this.inventory.add(UpdatePlayer.objectList[random.nextInt(UpdatePlayer.objectList.length)]);</span>
+<span class="fc" id="L223">            Random random = new Random();</span>
+<span class="fc" id="L224">            this.inventory.add(Manager.objectList[random.nextInt(Manager.objectList.length)]);</span>
 
             // Add/upgrade abilities to player
-<span class="fc" id="L136">            HashMap&lt;String, Integer&gt; abilities = UpdatePlayer.abilitiesPerTypeAndLevel().get(this.getAvatarClass()).get(this.level.toInt());</span>
-<span class="fc" id="L137">            abilities.forEach((ability, level) -&gt; {</span>
-<span class="fc" id="L138">                this.abilities.put(ability, abilities.get(ability));</span>
-<span class="fc" id="L139">            });</span>
+<span class="fc" id="L227">            avatarClass.getAbilityPerLevel().forEach((ability,value)-&gt;</span>
+<span class="fc" id="L228">                {this.abilities.put(ability,value[this.level.toInt()-1]);}</span>
+            );
         }
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L231">    }</span>
 
     public void removeMoney(int amount)
     {
-<span class="fc" id="L145">        Natural toRemove = Natural.valueOf(amount);</span>
-<span class="fc bfc" id="L146" title="All 2 branches covered.">        if (this.money.compareTo(toRemove) == 1) </span>
+<span class="fc" id="L235">        Natural toRemove = Natural.valueOf(amount);</span>
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (this.money.compareTo(toRemove) == 1) </span>
         {
-<span class="fc" id="L148">            throw new IllegalArgumentException(&quot;Player can't have a negative money!&quot;);</span>
+<span class="fc" id="L238">            throw new IllegalArgumentException(&quot;Player can't have a negative money!&quot;);</span>
         }
-<span class="fc" id="L150">        this.money.substract(toRemove);</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L240">        this.money.substract(toRemove);</span>
+<span class="fc" id="L241">    }</span>
     public void addMoney(int amount) 
     { 
-<span class="fc" id="L154">        Natural toAdd = Natural.valueOf(amount);</span>
-<span class="fc" id="L155">        this.money.add(toAdd);</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L244">        Natural toAdd = Natural.valueOf(amount);</span>
+<span class="fc" id="L245">        this.money.add(toAdd);</span>
+<span class="fc" id="L246">    }</span>
 
     @Override 
     public String toString()
     {
-<span class="fc" id="L161">        StringBuilder sb = new StringBuilder(&quot;Joueur &quot;);</span>
-<span class="fc" id="L162">        sb.append(this.avatarName);</span>
-<span class="fc" id="L163">        sb.append(&quot; joué par &quot;);</span>
-<span class="fc" id="L164">        sb.append(this.playerName);</span>
-<span class="fc" id="L165">        sb.append(&quot;\nNiveau : &quot;);</span>
-<span class="fc" id="L166">        sb.append(this.level.toInt());</span>
-<span class="fc" id="L167">        sb.append(&quot; (XP totale : &quot;);</span>
-<span class="fc" id="L168">        sb.append(this.xp);</span>
-<span class="fc" id="L169">        sb.append(&quot;)\n\nCapacités :&quot;);</span>
-<span class="fc" id="L170">        this.abilities.forEach((name, level) -&gt; {</span>
-<span class="fc" id="L171">            sb.append(&quot;\n   &quot; + name + &quot; : &quot; + level);</span>
-<span class="fc" id="L172">        });</span>
-<span class="fc" id="L173">        sb.append(&quot;\n\nInventaire :&quot;);</span>
-<span class="fc" id="L174">        this.inventory.forEach(item -&gt; {</span>
-<span class="nc" id="L175">            sb.append(&quot;\n   &quot; + item);</span>
-<span class="nc" id="L176">        });</span>
-<span class="fc" id="L177">        return sb.toString();</span>
+<span class="fc" id="L251">        StringBuilder sb = new StringBuilder(&quot;Joueur &quot;);</span>
+<span class="fc" id="L252">        sb.append(this.avatarName);</span>
+<span class="fc" id="L253">        sb.append(&quot; joué par &quot;);</span>
+<span class="fc" id="L254">        sb.append(this.playerName);</span>
+<span class="fc" id="L255">        sb.append(&quot;\nNiveau : &quot;);</span>
+<span class="fc" id="L256">        sb.append(this.level.toInt());</span>
+<span class="fc" id="L257">        sb.append(&quot; (XP totale : &quot;);</span>
+<span class="fc" id="L258">        sb.append(this.xp);</span>
+<span class="fc" id="L259">        sb.append(&quot;)\n\nCapacités :&quot;);</span>
+
+<span class="fc" id="L261">        ArrayList&lt;Ability&gt; abilitiesKey = new ArrayList&lt;Ability&gt;(this.abilities.keySet());</span>
+<span class="fc" id="L262">        Collections.sort(abilitiesKey);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        for(Ability a : abilitiesKey)</span>
+        {
+<span class="fc bfc" id="L265" title="All 2 branches covered.">            if(this.abilities.get(a) != 0)</span>
+            {
+<span class="fc" id="L267">                sb.append(&quot;\n   &quot; + a.toString() + &quot; : &quot; + this.abilities.get(a));</span>
+            } 
+<span class="fc" id="L269">        } </span>
+
+<span class="fc" id="L271">        sb.append(&quot;\n\nInventaire :&quot;);</span>
+<span class="fc" id="L272">        this.inventory.forEach(item -&gt; {</span>
+<span class="nc" id="L273">            sb.append(&quot;\n   &quot; + item);</span>
+<span class="nc" id="L274">        });</span>
+<span class="fc" id="L275">        return sb.toString();</span>
+    }
+
+    public String toMarkDown()
+    {
+<span class="nc" id="L280">        StringBuilder sb = new StringBuilder(&quot;#Joueur &quot;);</span>
+<span class="nc" id="L281">        sb.append(this.avatarName);</span>
+<span class="nc" id="L282">        sb.append(&quot;#\n**Joué par &quot;);</span>
+<span class="nc" id="L283">        sb.append(this.playerName);</span>
+<span class="nc" id="L284">        sb.append(&quot;**\n**Niveau : &quot;);</span>
+<span class="nc" id="L285">        sb.append(this.level.toInt());</span>
+<span class="nc" id="L286">        sb.append(&quot;** (XP totale : &quot;);</span>
+<span class="nc" id="L287">        sb.append(this.xp);</span>
+<span class="nc" id="L288">        sb.append(&quot;)\n\n##Capacités :##&quot;);</span>
+
+<span class="nc" id="L290">        ArrayList&lt;Ability&gt; abilitiesKey = new ArrayList&lt;Ability&gt;(this.abilities.keySet());</span>
+<span class="nc" id="L291">        Collections.sort(abilitiesKey);</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        for(Ability a : abilitiesKey)</span>
+        {
+<span class="nc bnc" id="L294" title="All 2 branches missed.">            if(this.abilities.get(a) != 0)</span>
+            {
+<span class="nc" id="L296">                sb.append(&quot;\n*&quot; + a.toString() + &quot; : &quot; + this.abilities.get(a));</span>
+            } 
+<span class="nc" id="L298">        } </span>
+
+<span class="nc" id="L300">        sb.append(&quot;\n\n##Inventaire :##&quot;);</span>
+<span class="nc" id="L301">        this.inventory.forEach(item -&gt; {</span>
+<span class="nc" id="L302">            sb.append(&quot;\n*&quot; + item);</span>
+<span class="nc" id="L303">        });</span>
+<span class="nc" id="L304">        return sb.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
