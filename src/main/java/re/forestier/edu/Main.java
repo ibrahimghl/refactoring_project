@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        Player firstPlayer = new Player("Florian", "Ruzberg de Rivehaute", Jobs.DWARF, 200, new ArrayList<>(),10);
+        Player firstPlayer = new Player("Florian", "Ruzberg de Rivehaute", Jobs.DWARF, 200, new ArrayList<>());
         firstPlayer.addMoney(400);
 
         firstPlayer.addXp(15);
